@@ -5,6 +5,7 @@ f = open("matrix.txt")
 for i in range(SIZE):
     matrix[i] = [int(x) for x in f.readline().split(",")]
 
+#build a graph
 graph = [{} for i in range(SIZE ** 2)]
 for i in range(SIZE):
     for j in range(SIZE):
@@ -17,7 +18,7 @@ for i in range(SIZE):
 # run dijkstra
 # this is "dist" in the pseudocode on wikipedia
 final_distance = [float("inf")] * SIZE ** 2
-final_distance[0] = 0
+final_distance[0] = matrix[0][0]
 
 # this combines "dist" and Q in the pseudocode on wikipedia
 # hopefully this combination speeds things up. It certainly simplifies
@@ -31,12 +32,12 @@ while len(dist) > 0:
 
     for neighbour in graph[current]:
 
-        alt = dist[current] + graph[current][neighbour]
-        if alt < final_distance[neighbour]:
-            dist[neighbour] = alt
-            final_distance[neighbour] = alt
+        alt_distance = dist[current] + graph[current][neighbour]
+        if alt_distance < final_distance[neighbour]:
+            dist[neighbour] = alt_distance
+            final_distance[neighbour] = alt_distance
     
     del dist[current]
 
 
-print final_distance[end] + matrix[0][0]
+print final_distance[SIZE ** 2 - 1]
